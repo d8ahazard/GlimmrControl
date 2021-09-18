@@ -3,6 +3,8 @@ using Xamarin.Essentials;
 using Xamarin.Forms.Xaml;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Collections.Specialized;
+using System;
 
 /*
  * Glimmr App v1.0.2
@@ -46,8 +48,14 @@ namespace Glimmr
                 {
                     ObservableCollection<GlimmrDevice> fromPreferences = Serialization.Deserialize(devices);
                     if (fromPreferences != null) listview.DeviceList = fromPreferences;
+                    listview.DeviceList.CollectionChanged += SaveDevices;
                 }
             }
+        }
+
+        private void SaveDevices(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            Preferences.Set("glimmrdevices", Serialization.SerializeObject(listview.DeviceList));
         }
 
         protected override void OnSleep()

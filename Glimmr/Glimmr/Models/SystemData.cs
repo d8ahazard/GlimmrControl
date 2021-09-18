@@ -1,258 +1,323 @@
-﻿using System.ComponentModel;
-using System.Drawing;
+﻿#region
+
+using System;
+using System.ComponentModel;
+using System.Net;
 using System.Runtime.InteropServices;
 using Newtonsoft.Json;
 
-namespace Glimmr.Models {
-	public class SystemData {
-		
-		[DefaultValue("")]
-		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-		public string Name { get; set; }
+#endregion
 
-		[DefaultValue(255)]
-		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-		public int Brightness { get; set; }
-		
-		[DefaultValue(10)]
-		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-		public int DiscoveryTimeout { get; set; }
-		
-		[DefaultValue(60)]
-		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-		public int AutoDiscoveryFrequency { get; set; }
-
-		[DefaultValue(15)]
-		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-		public int CropDelay { get; set; }
-		
-		[DefaultValue(0)]
-		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-		public int DeviceMode { get; set; }
-		
-		[DefaultValue(0)]
-		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-		public int PreviousMode { get; set; }
-		
-		[DefaultValue(0)]
-		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-		public int DeviceGroup { get; set; }
-		
-		[DefaultValue(0)]
-		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-		public int AmbientMode { get; set; }
-
-		[JsonProperty] public string AmbientColor { get; set; } = "FFFFFF";
-		
-		[DefaultValue(0)]
-		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-		public int AmbientShow { get; set; }
-		
-		[DefaultValue("")]
-		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-		public string GroupName { get; set; }
-		
-		[DefaultValue("US/Central")]
-		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-		public string TimeZone { get; set; } = "US/Central";
-		
-		[DefaultValue("main")]
-		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-		public string UpdateBranch { get; set; } = "main";
-		
-		[DefaultValue("dark")]
-		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-		public string Theme { get; set; } = "dark";
-		
+namespace Glimmr.Models
+{
+	public class SystemData
+	{
 		[DefaultValue(false)]
 		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-		public bool AutoUpdate { get; set; }
-		
-		[DefaultValue(false)]
-		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-		public bool DefaultSet { get; set; }
-		
-		[DefaultValue(false)]
-		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-		public bool ShowSource { get; set; }
-		
+		public static bool IsWindows => RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+
 		[DefaultValue(false)]
 		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
 		public bool AutoDisabled { get; set; }
 
+		[DefaultValue(false)]
+		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+		public bool AutoRemoveDevices { get; set; }
+
+		[DefaultValue(false)]
+		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+		public bool AutoUpdate { get; set; }
+
+		[DefaultValue(false)]
+		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+		public bool DefaultSet { get; set; }
+
+		[DefaultValue(true)]
+		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+		public bool EnableAutoBrightness { get; set; } = true;
+
 		[DefaultValue(true)]
 		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
 		public bool EnableAutoDisable { get; set; } = true;
-		
-		[DefaultValue(30)]
-		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-		public int AutoDisableDelay { get; set; }
-		
+
 		[DefaultValue(true)]
 		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
 		public bool EnableLetterBox { get; set; } = true;
-		
+
 		[DefaultValue(true)]
 		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
 		public bool EnablePillarBox { get; set; } = true;
-		
-		// USB index to use for cam/HDMI
-		[DefaultValue(0)]
-		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-		public int UsbSelection { get; set; }
-		
-		[DefaultValue(1)]
-		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-		public int CamType { get; set; } = 1;
-		
-		[DefaultValue(2)]
-		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-		public int CaptureMode { get; set; } = 2;
-		
-		[DefaultValue(255)]
-		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-		public int MinBrightness { get; set; } = 255;
-		
-		[DefaultValue(0)]
-		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-		public int SaturationBoost { get; set; }
-		
-		[DefaultValue(0)]
-		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-		public int PreviewMode { get; set; }
-		
-		[DefaultValue(1)]
-		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-		public int RecId { get; set; } = 1;
-		
-		[DefaultValue("Dreamscreen4K")]
-		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-		public string DevType { get; set; } = "Dreamscreen4K";
-		
-		[DefaultValue("")]
-		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-		public string DsIp { get; set; }
 
-		[DefaultValue("127.0.0.1")]
+		[DefaultValue(false)]
 		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-		public string OpenRgbIp { get; set; } = "127.0.0.1";
+		public bool ShowSource { get; set; }
 
-		[DefaultValue(6742)]
+		[DefaultValue(false)]
 		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-		public int OpenRgbPort { get; set; } = 6742;
-		
-		[DefaultValue("")]
+		public bool SkipDemo { get; set; }
+
+		[DefaultValue(false)]
 		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-		public string RecDev { get; set; }
-		
+		public bool SkipTour { get; set; }
+
+		[DefaultValue(false)]
+		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+		public bool TestRazer { get; set; }
+
+		[DefaultValue(false)]
+		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+		public bool UseCenter { get; set; }
+
+		[DefaultValue(3)]
+		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+		public float AblAmps { get; set; } = 3f;
+
+		[DefaultValue(5)]
+		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+		public float AblVolts { get; set; } = 5f;
+
+		[DefaultValue(.5f)]
+		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+		public float AudioGain { get; set; } = .6f;
+
+		[DefaultValue(.025f)]
+		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+		public float AudioMin { get; set; } = .01f;
+
+		[DefaultValue(.0f)]
+		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+		public float AudioRotationLower { get; set; }
+
+		[DefaultValue(.0f)]
+		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+		public float AudioRotationSensitivity { get; set; }
+
+		[DefaultValue(.0f)]
+		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+		public float AudioRotationSpeed { get; set; }
+
+		[DefaultValue(1f)]
+		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+		public float AudioRotationUpper { get; set; } = 1f;
+
 		[DefaultValue(.01f)]
 		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
 		public float AudioThreshold { get; set; } = .01f;
 
 		[DefaultValue(0)]
 		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+		public int AmbientMode { get; set; }
+
+		[DefaultValue(0)]
+		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+		public int AmbientShow { get; set; }
+
+		[DefaultValue(0)]
+		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
 		public int AudioMap { get; set; }
-		
-		[DefaultValue(.0f)]
-		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-		public float AudioRotationSensitivity { get; set; }
-		
-		[DefaultValue(.0f)]
-		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-		public float AudioRotationSpeed { get; set; }
-		
-		[DefaultValue(.0f)]
-		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-		public float AudioRotationLower { get; set; }
 
-		[DefaultValue(1f)]
+		[DefaultValue(30)]
 		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-		public float AudioRotationUpper { get; set; } = 1f;
-		
-		[DefaultValue(.5f)]
-		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-		public float AudioGain { get; set; } = .5f;
-		
-		[DefaultValue(.025f)]
-		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-		public float AudioMin { get; set; } = .025f;
+		public int AutoDisableDelay { get; set; }
 
-		
-		//TODO: Make getter for this always retrieve same value used by setup script
-		[DefaultValue("")]
+		[DefaultValue(60)]
 		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-		public string Serial { get; set; }
+		public int AutoDiscoveryFrequency { get; set; }
+
+		// How many days to wait to auto-remove not-seen devices.
+		[DefaultValue(7)]
+		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+		public int AutoRemoveDevicesAfter { get; set; } = 7;
+
+		[DefaultValue(2)]
+		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+		public int AutoUpdateTime { get; set; }
+
+		[DefaultValue(115200)]
+		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+		public int BaudRate { get; set; } = 115200;
+
+		[DefaultValue(96)]
+		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+		public int BottomCount { get; set; } = 96;
+
+		[DefaultValue(255)]
+		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+		public int Brightness { get; set; }
+
+		[DefaultValue(1)]
+		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+		public int CamType { get; set; } = 1;
+
+		[DefaultValue(2)]
+		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+		public int CaptureMode { get; set; } = 2;
+
+		[DefaultValue(15)]
+		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+		public int CropDelay { get; set; }
+
+		[DefaultValue(0)]
+		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+		public int DeviceGroup { get; set; }
+
+
+		[DefaultValue(0)]
+		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+		public int DeviceMode { get; set; }
+
+		[DefaultValue(10)]
+		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+		public int DiscoveryTimeout { get; set; }
+
+		[DefaultValue(10)]
+		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+		public int HSectors { get; set; } = 10;
 
 		// Values for general LED settings
 		[DefaultValue(0)]
 		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
 		public int LedCount => LeftCount + RightCount + TopCount + BottomCount;
-		
-		[DefaultValue(24)]
+
+		[DefaultValue(54)]
 		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-		public int LeftCount { get; set;} = 24;
-		
-		[DefaultValue(24)]
+		public int LeftCount { get; set; } = 54;
+
+		[DefaultValue(255)]
 		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-		public int RightCount { get; set; } = 24;
-		
-		[DefaultValue(40)]
+		public int MinBrightness { get; set; } = 255;
+
+		[DefaultValue(6742)]
 		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-		public int TopCount { get; set; } = 40;
-		
-		[DefaultValue(40)]
+		public int OpenRgbPort { get; set; } = 6742;
+
+		[DefaultValue(0)]
 		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-		public int BottomCount { get; set; } = 40;
-		
-		[DefaultValue(24)]
+		public int PreviewMode { get; set; }
+
+		[DefaultValue(0)]
 		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-		
-		public int VCountDs { get; set; } = 24;
-		
-		[DefaultValue(40)]
+		public int PreviousMode { get; set; }
+
+		[DefaultValue(1)]
 		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-		public int HCountDs { get; set; } = 40;
-		
-		[DefaultValue(10)]
+		public int RecId { get; set; } = 1;
+
+		[DefaultValue(54)]
 		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-		
-		public int HSectors { get; set; } = 10;
-		
+		public int RightCount { get; set; } = 54;
+
+		[DefaultValue(0)]
+		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+		public int SaturationBoost { get; set; }
+
+		// Screen capture mode. 0="region", 1="monitor".
+		[DefaultValue(0)]
+		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+		public int ScreenCapMode { get; set; }
+
+		[DefaultValue(0)]
+		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+		public int SectorCount
+		{
+			get
+			{
+				if (UseCenter)
+				{
+					return HSectors * VSectors;
+				}
+
+				return HSectors + HSectors + VSectors + VSectors - 4;
+			}
+		}
+
+		[DefaultValue(15)]
+		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+
+		public int StreamMode { get; set; } = 2;
+
+		[DefaultValue(96)]
+		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+		public int TopCount { get; set; } = 96;
+
+		// USB index to use for cam/HDMI
+		[DefaultValue(0)]
+		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+		public int UsbSelection { get; set; }
+
+
 		[DefaultValue(6)]
 		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
 		public int VSectors { get; set; } = 6;
 
-		[DefaultValue(true)]
-		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-		public bool AutoRemoveDevices { get; set; } = true;
-		
-		[DefaultValue(0)]
-		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-		public int SectorCount => HSectors + HSectors + VSectors + VSectors - 4; 
+		[JsonProperty] public string AmbientColor { get; set; } = "FFFFFF";
 
-		// How many days to wait to auto-remove not-seen devices.
-		[DefaultValue(1)]
+		[DefaultValue("")]
 		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-		public int AutoRemoveDevicesAfter { get; set; } = 1;
-		
-		[DefaultValue(false)]
-		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-		public bool TestRazer { get; set; }
+		public string DeviceName { get; set; } = "";
 
-		// Screen capture mode. 0="region", 1="monitor". 1 is only available for windows users.
-		[DefaultValue(0)]
+		[DefaultValue("Dreamscreen4K")]
 		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-		public int ScreenCapMode { get; set; }
-		
-		[DefaultValue(false)]
+		public string DevType { get; set; } = "Dreamscreen4K";
+
+		[DefaultValue("")]
 		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-		public static bool IsWindows => RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+		public string DsIp { get; set; } = "";
 
-		// Full screen region
-		[JsonProperty] public static Rectangle MonitorRegion {get;set;}
-		
-		// Selected screen region
-		[JsonProperty] public Rectangle CaptureRegion { get; set; }
+		[DefaultValue("")]
+		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+		public string GroupName { get; set; } = "";
 
+		[DefaultValue("")]
+		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+		public string Name { get; set; } = "";
+
+		[DefaultValue("127.0.0.1")]
+		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+		public string OpenRgbIp { get; set; } = "127.0.0.1";
+
+		[DefaultValue("")]
+		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+		public string RecDev { get; set; } = "";
+
+		//TODO: Make getter for this always retrieve same value used by setup script
+		[DefaultValue("")]
+		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+		public string Serial { get; set; } = "";
+
+		[DefaultValue("dark")]
+		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+		public string Theme { get; set; } = "dark";
+
+		[DefaultValue("US/Central")]
+		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+		public string TimeZone { get; set; } = "US/Central";
+
+		[DefaultValue("0")]
+		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+		public string Units { get; set; } = "0";
+
+		[DefaultValue(7)]
+		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+		public int BlackLevel { get; set; } = 7;
+
+		public void SetDefaults()
+		{
+			Brightness = 255;
+			DiscoveryTimeout = 10;
+			AutoDiscoveryFrequency = 60;
+			CropDelay = 15;
+			DeviceMode = 0;
+			AutoUpdateTime = 2;
+			DefaultSet = true;
+			AudioGain = .6f;
+			AudioMin = .01f;
+			BaudRate = 115200;
+			DeviceName = Environment.MachineName;
+			if (string.IsNullOrEmpty(DeviceName))
+			{
+				DeviceName = Dns.GetHostName();
+			}
+		}
 	}
 }

@@ -18,9 +18,8 @@ namespace Glimmr
         private string networkAddress = "10.41.0.1";                          //device IP (can also be hostname if applicable)
         private string name = "";                                               //device display name ("Server Description")
         private DeviceStatus status = DeviceStatus.Default;                     //Current connection status
-        private bool stateCurrent = false;                                      //Is the light currently on?
-        private bool isEnabled = true;                                          //Disabled devices don't get polled or show up in the list
-        private double brightnessReceived = 0.9, brightnessCurrent = 0.9;       //There are two vars for brightness to discern API responses from slider updates
+        private bool isEnabled = true;
+        private int deviceMode = 0;                     
 
         [XmlElement("url")]
         public string NetworkAddress
@@ -72,36 +71,41 @@ namespace Glimmr
             get { return isEnabled; }
         }
 
+        
         [XmlIgnore]
-        public double BrightnessCurrent
+        public int DeviceMode
         {
-            set
-            {
-                brightnessCurrent = value;
-                if (brightnessCurrent != brightnessReceived) //only send if value was changed by slider
-                {
-                    byte toSend = (byte)Math.Round(brightnessCurrent);
-                    RateLimitedSender.SendAPICall(this, "/brightness?value=" + toSend);
-                }
+            get { return deviceMode; }
+            set {
+                OnPropertyChanged("PowerColor");
+                OnPropertyChanged("VideoColor");
+                OnPropertyChanged("AudioColor");
+                OnPropertyChanged("AvColor");
+                OnPropertyChanged("AmbientColor");
+                OnPropertyChanged("StreamColor");
+                deviceMode = value; 
             }
-            get { return brightnessCurrent; }
-        }
-
-        [XmlIgnore]
-        public Color ColorCurrent { get; set; }
-
-        [XmlIgnore]
-        public bool StateCurrent
-        {
-            get { return stateCurrent; }
-            set { OnPropertyChanged("StateColor"); stateCurrent = value; }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        //helper properties for updating view dynamically via data binding
         [XmlIgnore]
-        public Color StateColor { get { return StateCurrent ? Color.FromHex("#666") : Color.FromHex("#222"); } } //button background color
+        public Color PowerColor { get { return DeviceMode == 0 ? Color.FromHex("#666") : Color.FromHex("#222"); } } //button background color
+        
+        [XmlIgnore]
+        public Color VideoColor { get { return DeviceMode == 1 ? Color.FromHex("#666") : Color.FromHex("#222"); } } //button background color
+
+        [XmlIgnore]
+        public Color AudioColor { get { return DeviceMode == 2 ? Color.FromHex("#666") : Color.FromHex("#222"); } } //button background color
+
+        [XmlIgnore]
+        public Color AmbientColor { get { return DeviceMode == 3 ? Color.FromHex("#666") : Color.FromHex("#222"); } } //button background color
+
+        [XmlIgnore]
+        public Color AvColor { get { return DeviceMode == 4 ? Color.FromHex("#666") : Color.FromHex("#222"); } } //button background color
+
+        [XmlIgnore]
+        public Color StreamColor { get { return DeviceMode == 5 ? Color.FromHex("#666") : Color.FromHex("#222"); } } //button background color
 
         [XmlIgnore]
         public string ListHeight { get { return isEnabled ? "-1" : "0"; } } //height of one view cell (set to 0 to hide device)
@@ -144,7 +148,7 @@ namespace Glimmr
         //member functions
 
         //send a call to this device's Glimmr HTTP API
-        public async Task<bool> SendApiCall(string call)
+        public async Task<bool> SendApiCall(string call, string p = "")
         {
             string url = "http://" + networkAddress;
             if (networkAddress.StartsWith("https://"))
@@ -152,7 +156,7 @@ namespace Glimmr
                 url = networkAddress;
             }
             Debug.WriteLine("URL: " + url);
-            string response = await DeviceHttpConnection.GetInstance().Send_Glimmr_API_Call(url, call);
+            string response = await DeviceHttpConnection.GetInstance().Send_Glimmr_API_Call(url, call + p);
             if (response == null)
             {
                 Debug.WriteLine("NO RESPONSE.");
@@ -180,20 +184,9 @@ namespace Glimmr
 
             CurrentStatus = DeviceStatus.Default; //the received response was valid
 
-            if (!NameIsCustom) Name = deviceResponse.Name;
+            if (!NameIsCustom) Name = deviceResponse.DeviceName;           
 
-            //only consider brightness if light is on and if it wasn't modified in the same call (prevents brightness slider "jumps")
-            if (deviceResponse.Brightness > 0 && !call.Contains("A="))
-            {
-                brightnessReceived = deviceResponse.Brightness;
-                BrightnessCurrent = brightnessReceived;
-                OnPropertyChanged("BrightnessCurrent"); //update slider binding
-            }
-
-            ColorCurrent = Color.FromHex(deviceResponse.AmbientColor);
-            OnPropertyChanged("ColorCurrent");
-
-            StateCurrent = deviceResponse.DeviceMode != 0;
+            DeviceMode = deviceResponse.DeviceMode;
             Debug.WriteLine("Returning true?");
             return true;
         }

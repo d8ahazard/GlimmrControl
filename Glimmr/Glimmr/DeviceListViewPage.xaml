@@ -10,14 +10,14 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <Style x:Key="LabelStyle" TargetType="Label">
-                <Setter Property="TextColor" Value="White" />
+                <Setter Property="TextColor" Value="#cfcfcf" />
                 <Setter Property="HorizontalOptions" Value="CenterAndExpand" />
                 <Setter Property="VerticalOptions" Value="CenterAndExpand" />
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
-    
-    <StackLayout BackgroundColor="#222222">
+
+    <StackLayout BackgroundColor="#181818">
         <glimmr:MenuBar x:Name="topMenuBar"/>
 
         <Label x:Name="welcomeLabel"
@@ -39,38 +39,65 @@
                 HasUnevenRows="True"
                 RowHeight="-1"
                 ios:ListView.SeparatorStyle="FullWidth"
-                BackgroundColor="#222222"
+                BackgroundColor="#181818"
                 Footer=""
                 CachingStrategy="RecycleElement">
 
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <StackLayout BackgroundColor="#222222" IsVisible="{Binding IsEnabled}" HeightRequest="{Binding ListHeight}">
-                            <Grid BackgroundColor="#222222" Padding="6" Margin="6,2" >
+                        <StackLayout BackgroundColor="#181818" IsVisible="{Binding IsEnabled}" HeightRequest="{Binding ListHeight}">
+                            <Grid BackgroundColor="#181818" Padding="6" Margin="6,2" >
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="35" />
-                                    <RowDefinition Height="25" />
-                                    <RowDefinition Height="25" />
+                                    <RowDefinition Height="55" />
+                                    <RowDefinition Height="45" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="65" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
                                 <Label Text="{Binding Name}" 
-                                       Font="Bold, 25" TextColor="white"
-                                       Grid.Row="0" Grid.Column="0" />
+                                       Font="Bold, 32" TextColor="#cfcfcf"
+                                       Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
                                 <Label Text="{Binding Status}" 
-                                       Font="18" TextColor="white"
-                                       Grid.Row="1" Grid.Column="0" />
+                                       Font="22" TextColor="#cfcfcf"
+                                       Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="3" Margin="0" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+                                <!-- Off -->
                                 <Button Clicked="OnPowerButtonTapped" 
-                                        BorderRadius="32" BackgroundColor="{Binding StateColor}" BorderColor="White" BorderWidth="4"
-                                        Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" />
-                                <Image Source="icon_power.png" Scale ="0.8" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" InputTransparent="True" BackgroundColor="Transparent"/>
-
-                                <Slider Maximum="255.1" Minimum="0.9" Value="{Binding BrightnessCurrent, Mode=TwoWay}"
-                                        MinimumTrackColor="{Binding ColorCurrent}" MaximumTrackColor="#333" ThumbColor="White" ios:Slider.UpdateOnTap="true"
-                                        Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" />
+                                        BorderRadius="32" BackgroundColor="{Binding PowerColor}" BorderColor="#cfcfcf" BorderWidth="4"
+                                        Grid.Row="1" Grid.Column="0"/>
+                                <Image Source="icon_power.png" Scale ="0.8" Grid.Row="1" Grid.Column="0" InputTransparent="True" BackgroundColor="Transparent"/>
+                                <!-- Video -->
+                                <Button Clicked="OnVideoButtonTapped" 
+                                        BorderRadius="32" BackgroundColor="{Binding VideoColor}" BorderColor="#cfcfcf" BorderWidth="4"
+                                        Grid.Row="1" Grid.Column="1"/>
+                                <Image Source="icon_video.png" Scale ="0.8" Grid.Row="1" Grid.Column="1" InputTransparent="True" BackgroundColor="Transparent"/>
+                                <!-- Audio -->
+                                <Button Clicked="OnAudioButtonTapped" 
+                                        BorderRadius="32" BackgroundColor="{Binding AudioColor}" BorderColor="#cfcfcf" BorderWidth="4"
+                                        Grid.Row="1" Grid.Column="2"/>
+                                <Image Source="icon_music.png" Scale ="0.8" Grid.Row="1" Grid.Column="2" InputTransparent="True" BackgroundColor="Transparent"/>
+                                <!-- Av -->
+                                <Button Clicked="OnAvButtonTapped" 
+                                        BorderRadius="32" BackgroundColor="{Binding AvColor}" BorderColor="#cfcfcf" BorderWidth="4"
+                                        Grid.Row="1" Grid.Column="3" />
+                                <Image Source="icon_av.png" Scale ="0.8" Grid.Row="1" Grid.Column="3" InputTransparent="True" BackgroundColor="Transparent"/>
+                                <!-- Ambient -->
+                                <Button Clicked="OnAmbientButtonTapped" 
+                                        BorderRadius="32" BackgroundColor="{Binding AmbientColor}" BorderColor="#cfcfcf" BorderWidth="4"
+                                        Grid.Row="1" Grid.Column="4" />
+                                <Image Source="icon_ambient.png" Scale ="0.8" Grid.Row="1" Grid.Column="4" InputTransparent="True" BackgroundColor="Transparent"/>
+                                <!-- Streaming -->
+                                <Button Clicked="OnStreamButtonTapped" 
+                                        BorderRadius="32" BackgroundColor="{Binding StreamColor}" BorderColor="#cfcfcf" BorderWidth="4"
+                                        Grid.Row="1" Grid.Column="5" />
+                                <Image Source="icon_stream.png" Scale ="0.8" Grid.Row="1" Grid.Column="5" InputTransparent="True" BackgroundColor="Transparent"/>
+                                
+                                
                             </Grid>
                         </StackLayout>
                     </ViewCell>

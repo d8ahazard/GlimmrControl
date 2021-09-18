@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:glimmr="clr-namespace:Glimmr"
              x:Class="Glimmr.DeviceModificationListViewPage"
-             BackgroundColor="#222"
+             BackgroundColor="#181818"
              xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
              ios:Page.UseSafeArea="true"
              >
@@ -12,13 +12,13 @@
         <glimmr:MenuBar x:Name="topMenuBar"/>
         <Label Text="Click on devices to hide them!" 
                HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"
-               TextColor="White" Font="18"/>
+               TextColor="#cfcfcf" Font="18"/>
 
         <ListView x:Name="DeviceModificationListView"
                 ItemsSource="{Binding DeviceList}"
                 ItemTapped="OnDeviceTapped"
                 HasUnevenRows="True"
-                BackgroundColor="#222222"
+                BackgroundColor="#181818"
                 ios:ListView.SeparatorStyle="FullWidth"
                 Footer=""
                 CachingStrategy="RecycleElement">
@@ -26,7 +26,7 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <Grid BackgroundColor="#222222" Margin="6,2" Padding ="6">
+                        <Grid BackgroundColor="#181818" Margin="6,2" Padding ="6">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="35" />
                                 <RowDefinition Height="25" />
@@ -42,7 +42,7 @@
                                    Font="18" TextColor="{Binding TextColor}"
                                    Grid.Row="1" Grid.Column="0" />
                             <Button Clicked="OnDeleteButtonTapped" BackgroundColor="#D9321F"
-                                    BorderRadius="34" BorderColor="White" BorderWidth="4"
+                                    BorderRadius="34" BorderColor="#cfcfcf" BorderWidth="4"
                                     Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" />
 
                             <Image Source="icon_delete.png" Scale ="0.8" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" InputTransparent="True" BackgroundColor="Transparent"/>
