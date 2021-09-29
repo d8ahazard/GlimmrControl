@@ -1,9 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Xml.Serialization;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -99,7 +98,7 @@ namespace Glimmr
             if (e.PropertyName.Equals("Name"))
             {
                 ReinsertDeviceSorted(sender as GlimmrDevice);
-            }
+            }            
         }
 
         private void InsertDeviceSorted(GlimmrDevice d)
@@ -115,65 +114,18 @@ namespace Glimmr
             if (deviceList.Remove(d)) InsertDeviceSorted(d);
         }
 
-        private void OnPowerButtonTapped(object sender, EventArgs eventArgs)
+        private void ModeTapped(object sender, EventArgs eventArgs)
         {
-            Button s = sender as Button;
+            ModeButton s = sender as ModeButton;
+            
             if (s.Parent.BindingContext is GlimmrDevice targetDevice)
             {
-                targetDevice.DeviceMode = 0;
-                _ = targetDevice.SendApiCall("/Mode", "?mode=0"); //Toggle On/Off API call
+                int mode = s.Mode;
+                targetDevice.DeviceMode = mode;
+                _ = targetDevice.SendApiCall("/Mode", "?mode=" + mode);
             }
         }
-
-        private void OnVideoButtonTapped(object sender, EventArgs eventArgs)
-        {
-            Button s = sender as Button;
-            if (s.Parent.BindingContext is GlimmrDevice targetDevice)
-            {
-                targetDevice.DeviceMode = 1;
-                _ = targetDevice.SendApiCall("/Mode", "?mode=1"); //Toggle On/Off API call
-            }
-        }
-
-        private void OnAudioButtonTapped(object sender, EventArgs eventArgs)
-        {
-            Button s = sender as Button;
-            if (s.Parent.BindingContext is GlimmrDevice targetDevice)
-            {
-                targetDevice.DeviceMode = 2;
-                _ = targetDevice.SendApiCall("/Mode", "?mode=2"); //Toggle On/Off API call
-            }
-        }
-
-        private void OnAvButtonTapped(object sender, EventArgs eventArgs)
-        {
-            Button s = sender as Button;
-            if (s.Parent.BindingContext is GlimmrDevice targetDevice)
-            {
-                targetDevice.DeviceMode = 4;
-                _ = targetDevice.SendApiCall("/Mode", "?mode=4"); //Toggle On/Off API call
-            }
-        }
-
-        private void OnAmbientButtonTapped(object sender, EventArgs eventArgs)
-        {
-            Button s = sender as Button;
-            if (s.Parent.BindingContext is GlimmrDevice targetDevice)
-            {
-                targetDevice.DeviceMode = 3;
-                _ = targetDevice.SendApiCall("/Mode", "?mode=3"); //Toggle On/Off API call
-            }
-        }
-
-        private void OnStreamButtonTapped(object sender, EventArgs eventArgs)
-        {
-            Button s = sender as Button;
-            if (s.Parent.BindingContext is GlimmrDevice targetDevice)
-            {
-                targetDevice.DeviceMode = 5;
-                _ = targetDevice.SendApiCall("/Mode", "?mode=5"); //Toggle On/Off API call
-            }
-        }
+                
 
         protected override void OnAppearing()
         {

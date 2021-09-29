@@ -14,7 +14,9 @@
                 <Setter Property="HorizontalOptions" Value="CenterAndExpand" />
                 <Setter Property="VerticalOptions" Value="CenterAndExpand" />
             </Style>
+            
         </ResourceDictionary>
+        
     </ContentPage.Resources>
 
     <StackLayout BackgroundColor="#181818">
@@ -49,55 +51,49 @@
                         <StackLayout BackgroundColor="#181818" IsVisible="{Binding IsEnabled}" HeightRequest="{Binding ListHeight}">
                             <Grid BackgroundColor="#181818" Padding="6" Margin="6,2" >
                                 <Grid.RowDefinitions>
+                                    <RowDefinition Height="65" />
                                     <RowDefinition Height="55" />
-                                    <RowDefinition Height="45" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="55" />
+                                    <ColumnDefinition Width="55" />
+                                    <ColumnDefinition Width="55" />
+                                    <ColumnDefinition Width="55" />
+                                    <ColumnDefinition Width="55" />
+                                    <ColumnDefinition Width="55" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
                                 <Label Text="{Binding Name}" 
                                        Font="Bold, 32" TextColor="#cfcfcf"
-                                       Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+                                       Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" VerticalTextAlignment="Center" HorizontalTextAlignment="Start"/>
                                 <Label Text="{Binding Status}" 
                                        Font="22" TextColor="#cfcfcf"
-                                       Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="3" Margin="0" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+                                       Grid.Row="0" Grid.Column="4" Grid.ColumnSpan="3" Margin="0" VerticalTextAlignment="Center" HorizontalTextAlignment="End"/>
                                 <!-- Off -->
-                                <Button Clicked="OnPowerButtonTapped" 
-                                        BorderRadius="32" BackgroundColor="{Binding PowerColor}" BorderColor="#cfcfcf" BorderWidth="4"
-                                        Grid.Row="1" Grid.Column="0"/>
-                                <Image Source="icon_power.png" Scale ="0.8" Grid.Row="1" Grid.Column="0" InputTransparent="True" BackgroundColor="Transparent"/>
+                                <glimmr:ModeButton Clicked="ModeTapped" 
+                                        CornerRadius="32" BorderColor="#cfcfcf" BorderWidth="2" Padding="5"
+                                        Grid.Row="1" Grid.Column="1" Source="icon_power.png" Mode="0" BackgroundColor="{Binding PowerColor}"/>
                                 <!-- Video -->
-                                <Button Clicked="OnVideoButtonTapped" 
-                                        BorderRadius="32" BackgroundColor="{Binding VideoColor}" BorderColor="#cfcfcf" BorderWidth="4"
-                                        Grid.Row="1" Grid.Column="1"/>
-                                <Image Source="icon_video.png" Scale ="0.8" Grid.Row="1" Grid.Column="1" InputTransparent="True" BackgroundColor="Transparent"/>
+                                <glimmr:ModeButton Clicked="ModeTapped" 
+                                        CornerRadius="32" BorderColor="#cfcfcf" BorderWidth="2" Padding="5"
+                                        Grid.Row="1" Grid.Column="2" Source="icon_video.png" Mode="1" BackgroundColor="{Binding VideoColor}"/>
                                 <!-- Audio -->
-                                <Button Clicked="OnAudioButtonTapped" 
-                                        BorderRadius="32" BackgroundColor="{Binding AudioColor}" BorderColor="#cfcfcf" BorderWidth="4"
-                                        Grid.Row="1" Grid.Column="2"/>
-                                <Image Source="icon_music.png" Scale ="0.8" Grid.Row="1" Grid.Column="2" InputTransparent="True" BackgroundColor="Transparent"/>
+                                <glimmr:ModeButton Clicked="ModeTapped" 
+                                        CornerRadius="32" BorderColor="#cfcfcf" BorderWidth="2" Padding="5"
+                                        Grid.Row="1" Grid.Column="3" Source="icon_music.png" Mode="2" BackgroundColor="{Binding AudioColor}"/>
                                 <!-- Av -->
-                                <Button Clicked="OnAvButtonTapped" 
-                                        BorderRadius="32" BackgroundColor="{Binding AvColor}" BorderColor="#cfcfcf" BorderWidth="4"
-                                        Grid.Row="1" Grid.Column="3" />
-                                <Image Source="icon_av.png" Scale ="0.8" Grid.Row="1" Grid.Column="3" InputTransparent="True" BackgroundColor="Transparent"/>
+                                <glimmr:ModeButton Clicked="ModeTapped" 
+                                        CornerRadius="32" BorderColor="#cfcfcf" BorderWidth="2" Padding="5"
+                                        Grid.Row="1" Grid.Column="4" Source="icon_av.png" Mode="4" BackgroundColor="{Binding AvColor}"/>
                                 <!-- Ambient -->
-                                <Button Clicked="OnAmbientButtonTapped" 
-                                        BorderRadius="32" BackgroundColor="{Binding AmbientColor}" BorderColor="#cfcfcf" BorderWidth="4"
-                                        Grid.Row="1" Grid.Column="4" />
-                                <Image Source="icon_ambient.png" Scale ="0.8" Grid.Row="1" Grid.Column="4" InputTransparent="True" BackgroundColor="Transparent"/>
+                                <glimmr:ModeButton Clicked="ModeTapped" 
+                                        CornerRadius="32" BorderColor="#cfcfcf" BorderWidth="2" Padding="5"
+                                        Grid.Row="1" Grid.Column="5" Source="icon_ambient.png" Mode="3" BackgroundColor="{Binding AmbientColor}"/>
                                 <!-- Streaming -->
-                                <Button Clicked="OnStreamButtonTapped" 
-                                        BorderRadius="32" BackgroundColor="{Binding StreamColor}" BorderColor="#cfcfcf" BorderWidth="4"
-                                        Grid.Row="1" Grid.Column="5" />
-                                <Image Source="icon_stream.png" Scale ="0.8" Grid.Row="1" Grid.Column="5" InputTransparent="True" BackgroundColor="Transparent"/>
-                                
-                                
+                                <glimmr:ModeButton Clicked="ModeTapped" 
+                                        CornerRadius="32" BorderColor="#cfcfcf" BorderWidth="2" Padding="5"
+                                        Grid.Row="1" Grid.Column="6" Source="icon_stream.png" Mode="5" BackgroundColor="{Binding StreamColor}"/>
                             </Grid>
                         </StackLayout>
                     </ViewCell>

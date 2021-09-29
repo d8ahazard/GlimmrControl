@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xamarin.Essentials;
-using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace Glimmr
@@ -56,7 +51,6 @@ namespace Glimmr
                 handler(this, eventArgs);
             } else
             {
-                //The default left button behavior is a back button (if the parent view doesn't attach a custom handler)
                 Navigation.PopModalAsync(false);
             }
         }

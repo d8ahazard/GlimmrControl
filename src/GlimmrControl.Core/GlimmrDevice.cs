@@ -19,7 +19,7 @@ namespace Glimmr
         private string name = "";                                               //device display name ("Server Description")
         private DeviceStatus status = DeviceStatus.Default;                     //Current connection status
         private bool isEnabled = true;
-        private int deviceMode = 0;                     
+        private int deviceMode = 0;
 
         [XmlElement("url")]
         public string NetworkAddress

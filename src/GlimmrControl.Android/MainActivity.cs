@@ -6,8 +6,9 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
+using Glimmr;
 
-namespace Glimmr.Droid
+namespace GlimmrControl.Android
 {
     [Activity(Label = "Glimmr", Icon = "@drawable/LogoACh", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity

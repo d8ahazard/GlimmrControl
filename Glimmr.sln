@@ -1,15 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.102
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31702.278
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Glimmr.Android", "Glimmr\Glimmr.Android\Glimmr.Android.csproj", "{9F93D0AB-7378-4AAC-9357-D41A791675E9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlimmrControl.Android", "src\GlimmrControl.Android\GlimmrControl.Android.csproj", "{9F93D0AB-7378-4AAC-9357-D41A791675E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Glimmr.iOS", "Glimmr\Glimmr.iOS\Glimmr.iOS.csproj", "{6D035223-3BA1-45CB-9CD2-0D53218BCAA4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlimmrControl.iOS", "src\GlimmrControl.iOS\GlimmrControl.iOS.csproj", "{6D035223-3BA1-45CB-9CD2-0D53218BCAA4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Glimmr.UWP", "Glimmr\Glimmr.UWP\Glimmr.UWP.csproj", "{8731E931-7BF6-45D6-A219-83947BD0566A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlimmrControl.UWP", "src\GlimmrControl.UWP\GlimmrControl.UWP.csproj", "{8731E931-7BF6-45D6-A219-83947BD0566A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Glimmr", "Glimmr\Glimmr\Glimmr.csproj", "{ABDDB7BD-CDCE-4A8B-ABB3-ADD90960EC83}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GlimmrControl.Core", "src\GlimmrControl.Core\GlimmrControl.Core.csproj", "{ABDDB7BD-CDCE-4A8B-ABB3-ADD90960EC83}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

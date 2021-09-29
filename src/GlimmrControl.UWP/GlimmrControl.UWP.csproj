@@ -7,8 +7,8 @@
     <ProjectGuid>{8731E931-7BF6-45D6-A219-83947BD0566A}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Glimmr.UWP</RootNamespace>
-    <AssemblyName>Glimmr.UWP</AssemblyName>
+    <RootNamespace>GlimmrControl.UWP</RootNamespace>
+    <AssemblyName>GlimmrControl.UWP</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.17134.0</TargetPlatformVersion>
@@ -170,15 +170,15 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Xamarin.Essentials">
-      <Version>1.0.0</Version>
+      <Version>1.7.0</Version>
     </PackageReference>
-    <PackageReference Include="Xamarin.Forms" Version="5.0.0.1931" />
-    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="6.1.5" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2083" />
+    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="6.2.12" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Glimmr\Glimmr.csproj">
-      <Project>{3D722692-23A5-420B-8E55-60229F5DE386}</Project>
-      <Name>Glimmr</Name>
+    <ProjectReference Include="..\GlimmrControl.Core\GlimmrControl.Core.csproj">
+      <Project>{ABDDB7BD-CDCE-4A8B-ABB3-ADD90960EC83}</Project>
+      <Name>GlimmrMobile</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
