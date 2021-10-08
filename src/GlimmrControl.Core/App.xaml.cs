@@ -1,10 +1,12 @@
-﻿using Xamarin.Forms;
-using Xamarin.Essentials;
-using Xamarin.Forms.Xaml;
-using System.Collections.ObjectModel;
-using System.Linq;
+﻿#region
+
 using System.Collections.Specialized;
-using System;
+using System.Linq;
+using Xamarin.Essentials;
+using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
+
+#endregion
 
 /*
  * Glimmr App v1.0.2
@@ -15,77 +17,81 @@ using System;
  */
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
-namespace Glimmr
-{
-    public partial class App : Application
-    {
-        private DeviceListViewPage listview;
 
-        private bool connectedToLocalLast = false;
+namespace GlimmrControl.Core {
+	public partial class App : Application {
+		private readonly DeviceListViewPage listview;
 
-        public App()
-        {
-            InitializeComponent();
+		private bool connectedToLocalLast;
 
-            listview = new DeviceListViewPage();
-            MainPage = listview;
-            //MainPage.SetValue(NavigationPage.BarTextColorProperty, Color.White);
-            Application.Current.MainPage.SetValue(NavigationPage.BarBackgroundColorProperty, "#0000AA");
+		public App() {
+			InitializeComponent();
 
-            Connectivity.ConnectivityChanged += OnConnectivityChanged;
-        }
+			listview = new DeviceListViewPage();
+			MainPage = listview;
+			//MainPage.SetValue(NavigationPage.BarTextColorProperty, Color.White);
+			Current.MainPage.SetValue(NavigationPage.BarBackgroundColorProperty, "#0000AA");
 
-        protected override void OnStart()
-        {
-            //Directly open the device web page if connected to Glimmr Access Point
-            if (NetUtility.IsConnectedToGlimmrAP()) listview.OpenAPDeviceControlPage();
+			Connectivity.ConnectivityChanged += OnConnectivityChanged;
+		}
 
-            // Load device list from Preferences
-            if (Preferences.ContainsKey("glimmrdevices"))
-            {
-                string devices = Preferences.Get("glimmrdevices", "");
-                if (!devices.Equals(""))
-                {
-                    ObservableCollection<GlimmrDevice> fromPreferences = Serialization.Deserialize(devices);
-                    if (fromPreferences != null) listview.DeviceList = fromPreferences;
-                    listview.DeviceList.CollectionChanged += SaveDevices;
-                }
-            }
-        }
+		protected override void OnStart() {
+			//Directly open the device web page if connected to Glimmr Access Point
+			if (NetUtility.IsConnectedToGlimmrAp()) {
+				listview.OpenAPDeviceControlPage();
+			}
 
-        private void SaveDevices(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            Preferences.Set("glimmrdevices", Serialization.SerializeObject(listview.DeviceList));
-        }
+			// Load device list from Preferences
+			if (Preferences.ContainsKey("glimmrdevices")) {
+				var devices = Preferences.Get("glimmrdevices", "");
+				if (!devices.Equals("")) {
+					var fromPreferences = Serialization.Deserialize(devices);
+					if (fromPreferences != null) {
+						listview.DeviceList = fromPreferences;
+					}
 
-        protected override void OnSleep()
-        {
-            //Handle when app sleeps, save device list to Preferences
-            string devices = Serialization.SerializeObject(listview.DeviceList);
-            Preferences.Set("glimmrdevices", devices);
-        }
+					listview.DeviceList.CollectionChanged += SaveDevices;
+				}
+			}
+		}
 
-        protected override void OnResume()
-        {
-            //Handle when app resumes, directly open the device web page if connected to Glimmr Access Point
-            if (NetUtility.IsConnectedToGlimmrAP()) listview.OpenAPDeviceControlPage();
+		private void SaveDevices(object sender, NotifyCollectionChangedEventArgs e) {
+			Preferences.Set("glimmrdevices", Serialization.SerializeObject(listview.DeviceList));
+		}
 
-            //Refresh light states
-            listview.RefreshAll();
-        }
+		protected override void OnSleep() {
+			//Handle when app sleeps, save device list to Preferences
+			var devices = Serialization.SerializeObject(listview.DeviceList);
+			Preferences.Set("glimmrdevices", devices);
+		}
 
-        private void OnConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
-        {
-            //Detect if currently connected to local (WiFi) or mobile network
-            var profiles = Connectivity.ConnectionProfiles;
-            bool connectedToLocal = (profiles.Contains(ConnectionProfile.WiFi) || profiles.Contains(ConnectionProfile.Ethernet));
+		protected override void OnResume() {
+			//Handle when app resumes, directly open the device web page if connected to Glimmr Access Point
+			if (NetUtility.IsConnectedToGlimmrAp()) {
+				listview.OpenAPDeviceControlPage();
+			}
 
-            //Directly open the device web page if connected to Glimmr Access Point
-            if (connectedToLocal && NetUtility.IsConnectedToGlimmrAP()) listview.OpenAPDeviceControlPage();
+			//Refresh light states
+			listview.RefreshAll();
+		}
 
-            //Refresh all devices on connection change
-            if (connectedToLocal && !connectedToLocalLast) listview.RefreshAll();
-            connectedToLocalLast = connectedToLocal;
-        }
-    }
+		private void OnConnectivityChanged(object sender, ConnectivityChangedEventArgs e) {
+			//Detect if currently connected to local (WiFi) or mobile network
+			var profiles = Connectivity.ConnectionProfiles;
+			var connectedToLocal = profiles.Contains(ConnectionProfile.WiFi) ||
+			                       profiles.Contains(ConnectionProfile.Ethernet);
+
+			//Directly open the device web page if connected to Glimmr Access Point
+			if (connectedToLocal && NetUtility.IsConnectedToGlimmrAp()) {
+				listview.OpenAPDeviceControlPage();
+			}
+
+			//Refresh all devices on connection change
+			if (connectedToLocal && !connectedToLocalLast) {
+				listview.RefreshAll();
+			}
+
+			connectedToLocalLast = connectedToLocal;
+		}
+	}
 }

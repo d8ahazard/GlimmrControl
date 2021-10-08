@@ -1,58 +1,52 @@
-﻿using System;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
-using System.Threading.Tasks;
+﻿#region
+
+using System;
 using Tmds.MDns;
 
-namespace Glimmr
-{
-    //Discover _http._tcp services via mDNS/Zeroconf and verify they are Glimmr devices by sending an API call
-    class DeviceDiscovery
-    {
-        private static DeviceDiscovery Instance;
-        private ServiceBrowser serviceBrowser;
-        public event EventHandler<DeviceCreatedEventArgs> ValidDeviceFound;
+#endregion
 
-        private DeviceDiscovery()
-        {
-            serviceBrowser = new ServiceBrowser();
-            serviceBrowser.ServiceAdded += OnServiceAdded;
-        }
+namespace GlimmrControl.Core {
+	//Discover _http._tcp services via mDNS/Zeroconf and verify they are Glimmr devices by sending an API call
+	internal class DeviceDiscovery {
+		private static DeviceDiscovery _instance;
+		private readonly ServiceBrowser serviceBrowser;
 
-        public void StartDiscovery()
-        {
-            serviceBrowser.StartBrowse("_glimmr._tcp");
-        }
+		private DeviceDiscovery() {
+			serviceBrowser = new ServiceBrowser();
+			serviceBrowser.ServiceAdded += OnServiceAdded;
+		}
 
-        public void StopDiscovery()
-        {
-            serviceBrowser.StopBrowse();
-        }
+		public event EventHandler<DeviceCreatedEventArgs> ValidDeviceFound;
 
-        private async void OnServiceAdded(object sender, ServiceAnnouncementEventArgs e)
-        {
-            GlimmrDevice toAdd = new GlimmrDevice();
-            foreach (var addr in e.Announcement.Addresses)
-            {
-                toAdd.NetworkAddress = addr.ToString(); break; //only get first address
-            }
-            toAdd.Name = e.Announcement.Hostname;
-            toAdd.NameIsCustom = false;
-            if (await toAdd.Refresh()) //check if the service is a valid Glimmr device
-            {
-                OnValidDeviceFound(new DeviceCreatedEventArgs(toAdd, false));
-            }
-        }
+		public void StartDiscovery() {
+			serviceBrowser.StartBrowse("_glimmr._tcp");
+		}
 
-        public static DeviceDiscovery GetInstance()
-        {
-            if (Instance == null) Instance = new DeviceDiscovery();
-            return Instance;
-        }
+		public void StopDiscovery() {
+			serviceBrowser.StopBrowse();
+		}
 
-        protected virtual void OnValidDeviceFound(DeviceCreatedEventArgs e)
-        {
-            ValidDeviceFound?.Invoke(this, e);
-        }
-    }
+		private async void OnServiceAdded(object sender, ServiceAnnouncementEventArgs e) {
+			var toAdd = new GlimmrDevice();
+			foreach (var address in e.Announcement.Addresses) {
+				toAdd.NetworkAddress = address.ToString();
+				break; //only get first address
+			}
+
+			toAdd.Name = e.Announcement.Hostname;
+			toAdd.NameIsCustom = false;
+			if (await toAdd.Refresh()) //check if the service is a valid Glimmr device
+			{
+				OnValidDeviceFound(new DeviceCreatedEventArgs(toAdd, false));
+			}
+		}
+
+		public static DeviceDiscovery GetInstance() {
+			return _instance ?? (_instance = new DeviceDiscovery());
+		}
+
+		protected virtual void OnValidDeviceFound(DeviceCreatedEventArgs e) {
+			ValidDeviceFound?.Invoke(this, e);
+		}
+	}
 }

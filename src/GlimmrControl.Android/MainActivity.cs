@@ -1,26 +1,25 @@
-﻿using System;
+﻿#region
 
 using Android.App;
 using Android.Content.PM;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Android.OS;
-using Glimmr;
+using GlimmrControl.Core;
+using Xamarin.Forms;
+using Xamarin.Forms.Platform.Android;
 
-namespace GlimmrControl.Android
-{
-    [Activity(Label = "Glimmr", Icon = "@drawable/LogoACh", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
-    public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
-    {
-        protected override void OnCreate(Bundle savedInstanceState)
-        {
-            TabLayoutResource = Resource.Layout.Tabbar;
-            ToolbarResource = Resource.Layout.Toolbar;
+#endregion
 
-            base.OnCreate(savedInstanceState);
-            global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
-            LoadApplication(new App());
-        }
-    }
+namespace GlimmrControl.Android {
+	[Activity(Label = "Glimmr", Icon = "@drawable/LogoACh", Theme = "@style/MainTheme", MainLauncher = true,
+		ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+	public class MainActivity : FormsAppCompatActivity {
+		protected override void OnCreate(Bundle savedInstanceState) {
+			TabLayoutResource = Resource.Layout.Tabbar;
+			ToolbarResource = Resource.Layout.Toolbar;
+
+			base.OnCreate(savedInstanceState);
+			Forms.Init(this, savedInstanceState);
+			LoadApplication(new App());
+		}
+	}
 }

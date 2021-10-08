@@ -1,49 +1,46 @@
-﻿using System.Collections.ObjectModel;
+﻿#region
+
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace Glimmr
-{
-    /*
-     *  Source: https://stackoverflow.com/questions/2434534/serialize-an-object-to-string
-     */
+#endregion
 
-    //convert GlimmrDevice list <-> string
-    static class Serialization
-    {
-        public static string SerializeObject<T>(T toSerialize)
-        {
-            XmlSerializer xmlSerializer = new XmlSerializer(toSerialize.GetType());
+namespace GlimmrControl.Core {
+	/*
+	 *  Source: https://stackoverflow.com/questions/2434534/serialize-an-object-to-string
+	 */
 
-            XmlWriterSettings ws = new XmlWriterSettings();
-            ws.NewLineHandling = NewLineHandling.None;
-            ws.Indent = false;
-            StringBuilder stringBuilder = new StringBuilder();
-            using (XmlWriter xmlWriter = XmlWriter.Create(stringBuilder, ws))
-            {
-                xmlSerializer.Serialize(xmlWriter, toSerialize);
-                return stringBuilder.ToString();
-            }
-        }
+	//convert GlimmrDevice list <-> string
+	internal static class Serialization {
+		public static string SerializeObject<T>(T toSerialize) {
+			var xmlSerializer = new XmlSerializer(toSerialize.GetType());
 
-        public static ObservableCollection<GlimmrDevice> Deserialize(string toDeserialize)
-        {
-            System.Diagnostics.Debug.WriteLine(toDeserialize);
+			var ws = new XmlWriterSettings {
+				NewLineHandling = NewLineHandling.None,
+				Indent = false
+			};
+			var stringBuilder = new StringBuilder();
+			using (var xmlWriter = XmlWriter.Create(stringBuilder, ws)) {
+				xmlSerializer.Serialize(xmlWriter, toSerialize);
+				return stringBuilder.ToString();
+			}
+		}
 
-            try
-            {
-                XmlSerializer xmlSerializer = new XmlSerializer(typeof(ObservableCollection<GlimmrDevice>));
-                using (StringReader textReader = new StringReader(toDeserialize))
-                {
-                    return xmlSerializer.Deserialize(textReader) as ObservableCollection<GlimmrDevice>;
-                }
-            }
-            catch
-            {     
-                return null;
-            }
-        }
-    }
+		public static ObservableCollection<GlimmrDevice> Deserialize(string toDeserialize) {
+			Debug.WriteLine(toDeserialize);
+
+			try {
+				var xmlSerializer = new XmlSerializer(typeof(ObservableCollection<GlimmrDevice>));
+				using (var textReader = new StringReader(toDeserialize)) {
+					return xmlSerializer.Deserialize(textReader) as ObservableCollection<GlimmrDevice>;
+				}
+			} catch {
+				return null;
+			}
+		}
+	}
 }

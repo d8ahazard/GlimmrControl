@@ -1,49 +1,47 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿#region
 
+using System;
+using System.Collections.ObjectModel;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace Glimmr
-{
-    //Viewmodel: Page for hiding and deleting existing device list entries
+#endregion
+
+namespace GlimmrControl.Core {
+	//Viewmodel: Page for hiding and deleting existing device list entries
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class DeviceModificationListViewPage : ContentPage
-	{
-        private ObservableCollection<GlimmrDevice> DeviceList;
-        public DeviceModificationListViewPage (ObservableCollection<GlimmrDevice> items)
-		{
-			InitializeComponent ();
+	public partial class DeviceModificationListViewPage : ContentPage {
+		private readonly ObservableCollection<GlimmrDevice> DeviceList;
 
-            DeviceList = items;
-            DeviceModificationListView.ItemsSource = DeviceList;
-        }
+		public DeviceModificationListViewPage(ObservableCollection<GlimmrDevice> items) {
+			InitializeComponent();
 
-        private void OnDeleteButtonTapped(object sender, EventArgs e)
-        {
-            Button s = sender as Button;
-            if (!(s.Parent.BindingContext is GlimmrDevice targetDevice)) return;
+			DeviceList = items;
+			DeviceModificationListView.ItemsSource = DeviceList;
+		}
 
-            DeviceList.Remove(targetDevice);
+		private void OnDeleteButtonTapped(object sender, EventArgs e) {
+			var s = sender as Button;
+			if (!(s.Parent.BindingContext is GlimmrDevice targetDevice)) {
+				return;
+			}
 
-            //Go back to main device list view if no devices in list
-            if (DeviceList.Count == 0) Navigation.PopModalAsync(false);
-        }
+			DeviceList.Remove(targetDevice);
 
-        private void OnDeviceTapped(object sender, ItemTappedEventArgs e)
-        {
-            //Deselect Item immediately
-            ((ListView)sender).SelectedItem = null;
+			//Go back to main device list view if no devices in list
+			if (DeviceList.Count == 0) {
+				Navigation.PopModalAsync(false);
+			}
+		}
 
-            if (e.Item is GlimmrDevice targetDevice)
-            {
-                //Toggle Device enabled (disabled = hidden in list)
-                targetDevice.IsEnabled = !targetDevice.IsEnabled;
-            }
-        }
-    }
+		private void OnDeviceTapped(object sender, ItemTappedEventArgs e) {
+			//Deselect Item immediately
+			((ListView)sender).SelectedItem = null;
+
+			if (e.Item is GlimmrDevice targetDevice) {
+				//Toggle Device enabled (disabled = hidden in list)
+				targetDevice.IsEnabled = !targetDevice.IsEnabled;
+			}
+		}
+	}
 }

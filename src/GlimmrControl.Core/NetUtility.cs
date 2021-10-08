@@ -1,41 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.Sockets;
+﻿#region
+
+using System.Linq;
 using System.Net.NetworkInformation;
-using System.Text;
+using System.Net.Sockets;
 
-namespace Glimmr
-{
-    class NetUtility
-    {
-        //we just assume we are connected to embedded AP if:
-        //1. the IP is in 10.41.0.0/24 subnet
-        //2. the device IP is between 2 and 5 (ESP8266 DHCP range) 
-        public static bool IsConnectedToGlimmrAP()
-        {
-            foreach (var netInterface in NetworkInterface.GetAllNetworkInterfaces())
-            {
-                if (netInterface.NetworkInterfaceType == NetworkInterfaceType.Wireless80211 ||
-                    netInterface.NetworkInterfaceType == NetworkInterfaceType.Ethernet)
-                {
-                    foreach (var addrInfo in netInterface.GetIPProperties().UnicastAddresses)
-                    {
-                        if (addrInfo.Address.AddressFamily == AddressFamily.InterNetwork)
-                        {
-                            var ip = addrInfo.Address;
-                            string ips = ip.ToString();
+#endregion
 
-                            if (ips.StartsWith("10.41.0."))
-                            {
-                                return true;
-                            }
-                        }
-                    }
-                }
-            }
-
-            return false;
-        }
-    }
+namespace GlimmrControl.Core {
+	internal static class NetUtility {
+		//we just assume we are connected to embedded AP if:
+		//1. the IP is in 10.41.0.0/24 subnet
+		//2. the device IP is between 2 and 5 (ESP8266 DHCP range) 
+		public static bool IsConnectedToGlimmrAp() {
+			return NetworkInterface.GetAllNetworkInterfaces().Where(netInterface => netInterface.NetworkInterfaceType == NetworkInterfaceType.Wireless80211 || netInterface.NetworkInterfaceType == NetworkInterfaceType.Ethernet).Any(netInterface => (from addressInfo in netInterface.GetIPProperties().UnicastAddresses where addressInfo.Address.AddressFamily == AddressFamily.InterNetwork select addressInfo.Address into ip select ip.ToString()).Any(ips => ips.StartsWith("10.41.0.")));
+		}
+	}
 }
